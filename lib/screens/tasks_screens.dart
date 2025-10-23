@@ -12,7 +12,9 @@ class TasksScreens extends StatefulWidget {
 }
 
 class _TasksScreensState extends State<TasksScreens> {
-  List<TaskModel> allTasks = [];
+  
+   List<TaskModel> allTasks = []; 
+  //  قائمة المهام واللي بشكل تلقائي رح تكون فاضية
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +25,15 @@ class _TasksScreensState extends State<TasksScreens> {
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
-      floatingActionButton: FloatingActionButton(
+
+       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final newTask = await showModalBottomSheet<TaskModel>(
+            final newTask = await showModalBottomSheet<TaskModel>(
             isScrollControlled: true,
             context: context,
             builder: (context) => SingleChildScrollView(
               child: Container(
+                // لضبط المسافة مع الكيبورد
                 padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                 child: Padding(
                   padding: const EdgeInsets.all(30.0),
@@ -39,7 +43,9 @@ class _TasksScreensState extends State<TasksScreens> {
             ),
           );
 
-           if (newTask != null) {
+          //  إذا المستخدم أضاف مهمة جديدة
+          if (newTask != null) {
+            // لحتى نعكس على الواجهة وتنضاف المهمة الجديدة على القائمة setStateاستعملنا 
             setState(() {
               allTasks.add(newTask);
             });
@@ -48,10 +54,12 @@ class _TasksScreensState extends State<TasksScreens> {
         child: Icon(Icons.add, color: Colors.white),
         backgroundColor: primaryColor,
       ),
-      body: Padding(
+
+       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 30),
         child: Column(
           children: [
+            //  عرض عدد المهام الموجودة
             Align(
               alignment: Alignment.centerRight,
               child: Text(
@@ -60,7 +68,8 @@ class _TasksScreensState extends State<TasksScreens> {
               ),
             ),
             SizedBox(height: 20),
-            Container(
+
+             Container(
               margin: EdgeInsets.all(5),
               padding: EdgeInsets.all(15),
               height: 570,
@@ -68,6 +77,7 @@ class _TasksScreensState extends State<TasksScreens> {
                 color: primaryColor,
                 borderRadius: BorderRadius.circular(20),
               ),
+              //parameter نمرر قائمة المهام كـ 
               child: CustomTasksList(tasksList: allTasks),
             ),
           ],

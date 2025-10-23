@@ -5,14 +5,14 @@ import 'package:to_do_app/utils/colors_helpers.dart';
 class AddTaskScreen extends StatelessWidget {
   AddTaskScreen({super.key});
 
-  final TextEditingController controller = TextEditingController();
+   final TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        Text(
+         Text(
           "Add Task",
           style: TextStyle(
             fontSize: 30,
@@ -20,31 +20,37 @@ class AddTaskScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+
         SizedBox(height: 30),
 
+        //  حقل  كتابة عنوان المهمة
         TextField(
           style: TextStyle(fontSize: 25),
           cursorColor: primaryColor,
           textAlign: TextAlign.center,
-          autofocus: true,
+          autofocus: true, 
           controller: controller,
         ),
+
         SizedBox(height: 30),
 
+        //  زر لإضافة المهمة
         ElevatedButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(primaryColor),
           ),
           onPressed: () {
+            // إذا ما كتب المستخدم أي شيء، ما يعمل شيء
             if (controller.text.trim().isEmpty) return;
-            
-            //   أنشئ التاسك الجديد
+
+            //  إنشاء كائن جديد من المهمة وهي المهمة اللي رح تنضاف 
             TaskModel newTask = TaskModel(
               taskTitle: controller.text,
               isCompleted: false,
             );
 
-            //   أرجعه عند إغلاق الشاشة
+            //  (TasksScreens) نرجع المهمة الجديدة للشاشة السابقة 
+            //  رح نمرر قيمة المهمة الجديدة لصفحة التاسكات لحتى يضيفها للقائمة
             Navigator.pop(context, newTask);
           },
           child: Padding(
