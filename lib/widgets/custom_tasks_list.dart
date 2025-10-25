@@ -1,41 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:to_do_app/model/task.dart';
+import 'package:to_do_app/providers/tasks_provider.dart';
 import 'package:to_do_app/widgets/custom_task.dart';
 
-class CustomTasksList extends StatefulWidget {
-  // add task واللي جابها من ال TasksScreens بنستقبل قائمة المهام من 
-  final List<TaskModel> tasksList;
-  const CustomTasksList({super.key, required this.tasksList});
+class CustomTasksList extends StatelessWidget {
+  const CustomTasksList({super.key});
 
-  @override
-  State<CustomTasksList> createState() => _CustomTasksListState();
-}
-
-class _CustomTasksListState extends State<CustomTasksList> {
   @override
   Widget build(BuildContext context) {
-    //   إذا ما في مهام  
-    if (widget.tasksList.isEmpty) {
-      return Center(
-        child: Text(
-          "No Tasks!!",
-          style: TextStyle(fontSize: 25, color: Colors.white),
-        ),
-      );
-    }
+     return Consumer<TasksDataProvider>(
+      builder: (context, tasksProvider, child) {
+        //   إذا ما في مهام
+        if (tasksProvider.tasks.isEmpty) {
+          return Center(
+            child: Text(
+              "No Tasks!!",
+              style: TextStyle(fontSize: 25, color: Colors.white),
+            ),
+          );
+        }
 
-    // عرض قائمة المهام
-    return ListView.builder(
-      itemCount: widget.tasksList.length,
-      itemBuilder: (context, index) {
-        return CustomTask(
-          task: widget.tasksList[index],
-          //  checkbox لما المستخدم يضغط على 
-          onUserChange: (value) {
-            setState(() {
-              // نبدل حالة المهمة (مكتملة او غير مكتملة)
-              widget.tasksList[index].toggeleCompleted();
-            });
+        return ListView.builder(
+          itemCount: tasksProvider.tasks.length,
+          itemBuilder: (context, index) {
+            return CustomTask(
+              task: tasksProvider.tasks[index],
+              //  checkbox لما المستخدم يضغط على
+              onUserChange: (value) {
+                // نبدل حالة المهمة (مكتملة او غير مكتملة)
+              tasksProvider.updateCompletedTask(tasksProvider.tasks[index]);
+              },
+              deleteTask: () {
+              tasksProvider.deleteTask(tasksProvider.tasks[index]);
+              },
+              
+            );
           },
         );
       },

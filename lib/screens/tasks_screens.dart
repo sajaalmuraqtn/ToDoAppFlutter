@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:to_do_app/model/task.dart';
+import 'package:to_do_app/providers/tasks_provider.dart';
 import 'package:to_do_app/screens/addTaskScreen.dart';
 import 'package:to_do_app/utils/colors_helpers.dart';
 import 'package:to_do_app/widgets/custom_tasks_list.dart';
 
-class TasksScreens extends StatefulWidget {
-  const TasksScreens({super.key});
+class TasksScreens extends StatelessWidget {
+    TasksScreens({super.key});
 
-  @override
-  State<TasksScreens> createState() => _TasksScreensState();
-}
-
-class _TasksScreensState extends State<TasksScreens> {
-  
-   List<TaskModel> allTasks = []; 
-  //  قائمة المهام واللي بشكل تلقائي رح تكون فاضية
-
-  @override
+ 
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -28,7 +22,7 @@ class _TasksScreensState extends State<TasksScreens> {
 
        floatingActionButton: FloatingActionButton(
         onPressed: () async {
-            final newTask = await showModalBottomSheet<TaskModel>(
+          showModalBottomSheet(
             isScrollControlled: true,
             context: context,
             builder: (context) => SingleChildScrollView(
@@ -43,13 +37,7 @@ class _TasksScreensState extends State<TasksScreens> {
             ),
           );
 
-          //  إذا المستخدم أضاف مهمة جديدة
-          if (newTask != null) {
-            // لحتى نعكس على الواجهة وتنضاف المهمة الجديدة على القائمة setStateاستعملنا 
-            setState(() {
-              allTasks.add(newTask);
-            });
-          }
+ 
         },
         child: Icon(Icons.add, color: Colors.white),
         backgroundColor: primaryColor,
@@ -63,7 +51,7 @@ class _TasksScreensState extends State<TasksScreens> {
             Align(
               alignment: Alignment.centerRight,
               child: Text(
-                "${allTasks.length} Tasks",
+                '${Provider.of<TasksDataProvider>(context).tasks.length} Tasks',
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               ),
             ),
@@ -77,8 +65,7 @@ class _TasksScreensState extends State<TasksScreens> {
                 color: primaryColor,
                 borderRadius: BorderRadius.circular(20),
               ),
-              //parameter نمرر قائمة المهام كـ 
-              child: CustomTasksList(tasksList: allTasks),
+               child: CustomTasksList(),
             ),
           ],
         ),
